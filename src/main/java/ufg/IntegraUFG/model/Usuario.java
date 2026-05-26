@@ -2,11 +2,12 @@ package ufg.IntegraUFG.model;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@Entity(name = "usuarios")
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +25,11 @@ public class Usuario {
     @Column(nullable = false)
     private String curso;
 
-    private ArrayList<Publicacao> publicacoes = new ArrayList<>();
-    private ArrayList<Comentario> comentarios = new ArrayList<>();
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    private List<Publicacao> publicacoes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    private List<Comentario> comentarios = new ArrayList<>();
 
     public Usuario(Long id, String nome, String emailInstitucional, String senha, String curso) {
         this.id = id;
@@ -79,19 +83,19 @@ public class Usuario {
         this.curso = curso;
     }
 
-    public ArrayList<Publicacao> getPublicacoes() {
+    public List<Publicacao> getPublicacoes() {
         return publicacoes;
     }
 
-    public void setPublicacoes(ArrayList<Publicacao> publicacoes) {
+    public void setPublicacoes(List<Publicacao> publicacoes) {
         this.publicacoes = publicacoes;
     }
 
-    public ArrayList<Comentario> getComentarios() {
+    public List<Comentario> getComentarios() {
         return comentarios;
     }
 
-    public void setComentarios(ArrayList<Comentario> comentarios) {
+    public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
     }
 }

@@ -1,21 +1,41 @@
 package ufg.IntegraUFG.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Publicacao implements Interagivel {
+@Entity
+@Table(name="publicacoes")
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Publicacao implements Interagivel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuario autor;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataCriacao;
+
+    @Column(name = "curtidas")
     private int curtidas;
 
-    private ArrayList<Comentario> comentarios = new ArrayList<>();
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL)
+    private List<Comentario> comentarios = new ArrayList<>();
 
     public Publicacao(Long id, Usuario autor) {
         this.id = id;
         this.autor = autor;
         this.dataCriacao = LocalDateTime.now();
         this.curtidas = 0;
+    }
+
+    public Publicacao() {
+
     }
 
     @Override
@@ -27,6 +47,7 @@ public class Publicacao implements Interagivel {
     public int getTotalCurtidas() {
         return this.curtidas;
     }
+
 
     public Long getId() {
         return id;
@@ -60,7 +81,7 @@ public class Publicacao implements Interagivel {
         this.curtidas = curtidas;
     }
 
-    public ArrayList<Comentario> getComentarios() {
+    public List<Comentario> getComentarios() {
         return comentarios;
     }
 

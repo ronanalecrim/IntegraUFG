@@ -1,13 +1,31 @@
 package ufg.IntegraUFG.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jdk.jfr.Timestamp;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name="comentarios")
 public class Comentario implements Interagivel{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "texto", nullable = false, length = 255)
     private String texto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuario autor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Publicacao publicacao;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataComentario;
+
+    @Column(name = "curtidas")
     private int curtidas;
 
     public Comentario(Long id, String texto, Usuario autor, Publicacao publicacao) {
@@ -17,6 +35,10 @@ public class Comentario implements Interagivel{
         this.publicacao = publicacao;
         this.dataComentario = LocalDateTime.now();
         this.curtidas = 0;
+    }
+
+    public Comentario() {
+
     }
 
     @Override
