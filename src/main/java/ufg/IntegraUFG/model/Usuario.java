@@ -1,12 +1,27 @@
 package ufg.IntegraUFG.model;
 
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+
 import java.util.ArrayList;
 
+@Entity(name = "usuarios")
 public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(unique = true, nullable = false)
     private String emailInstitucional;
+
+    @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
     private String curso;
 
     private ArrayList<Publicacao> publicacoes = new ArrayList<>();
@@ -18,6 +33,10 @@ public class Usuario {
         this.emailInstitucional = emailInstitucional;
         this.senha = senha;
         this.curso = curso;
+    }
+
+    public Usuario() {
+
     }
 
     public Long getId() {
