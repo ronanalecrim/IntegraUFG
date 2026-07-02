@@ -57,7 +57,7 @@ public class IntegraUfgApp extends Application {
 
         loginLayout.getChildren().addAll(titulo, subtitulo, campoEmail, campoSenha, btnLogin);
         loginScene = new Scene(loginLayout, 800, 600);
-        loginscene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        loginScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
     }
 
     private void criarTelaFeed() {
@@ -117,7 +117,7 @@ public class IntegraUfgApp extends Application {
         feedLayout.setCenter(scrollPane);
 
         feedScene = new Scene(feedLayout, 800, 600);
-        feedscene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        feedScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
     }
 
     public static void main(String[] args) {
