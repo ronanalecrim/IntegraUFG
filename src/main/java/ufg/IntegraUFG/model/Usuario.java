@@ -1,5 +1,6 @@
 package ufg.IntegraUFG.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
@@ -25,9 +26,14 @@ public class Usuario {
     @Column(nullable = false)
     private String curso;
 
+    @Column(nullable = false)
+    private boolean admin = false;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
     private List<Publicacao> publicacoes = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
     private List<Comentario> comentarios = new ArrayList<>();
 
@@ -41,6 +47,16 @@ public class Usuario {
 
     public Usuario() {
 
+    }
+
+    public void adicionarPublicacao(Publicacao p) {
+        this.publicacoes.add(p);
+        p.setAutor(this);
+    }
+
+    public void adicionarComentario(Comentario c) {
+        this.comentarios.add(c);
+        c.setAutor(this);
     }
 
     public Long getId() {

@@ -1,5 +1,6 @@
 package ufg.IntegraUFG.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ufg.IntegraUFG.dto.request.EventoRequestDTO;
 import ufg.IntegraUFG.dto.request.PostagemRequestDTO;
@@ -94,5 +95,33 @@ public class PublicacaoService {
                 postagem.getDataCriacao(),
                 postagem.getCurtidas()
         );
+    }
+
+    public PostagemResponseDTO buscarPorId(Long id) {
+        PostagemTexto postagem = postagemRepository.findById(id).orElseThrow();
+        return mapearParaDTO(postagem);
+    }
+
+    // CRUD DE EVENTOS QUE FALTAVA
+    public List<EventoResponseDTO> listarEventos() {
+        return eventoRepository.findAll().stream().map(e -> new EventoResponseDTO(e.getId(), e.getAutor().getNome(), e.getAutor().getCurso(), e.getTitulo(), e.getDescricao(), e.getDataEvento(), e.getLocal(), e.getTotalCurtidas())).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public EventoResponseDTO editarEvento(Long id, EventoRequestDTO dto) {
+        EventoAcademico evento = eventoRepository.findById(id).orElseThrow();
+        if(!evento.getAutor().getId().equals(dto.idAutor())) throw new IllegalArgumentException("Só o autor pode editar.");
+
+        evento.setTitulo(dto.titulo());
+        evento.setDescricao(dto.descricao());
+        evento.setDataEvento(dto.dataEvento());
+        evento.setLocal(dto.local());
+
+        return new EventoResponseDTO(evento.getId(), evento.getAutor().getNome(), evento.getAutor().getCurso(), evento.getTitulo(), evento.getDescricao(), evento.getDataEvento(), evento.getLocal(), evento.getTotalCurtidas());
+    }
+
+    @Transactional
+    public void deletarEvento(Long id) {
+        eventoRepository.deleteById(id);
     }
 }
