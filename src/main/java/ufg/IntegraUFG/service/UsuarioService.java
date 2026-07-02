@@ -1,13 +1,13 @@
 package ufg.IntegraUFG.service;
 
 import ufg.IntegraUFG.model.Usuario;
-import ufg.IntegraUFG.repository.UserRepository;
+import ufg.IntegraUFG.repository.UsuarioRepository;
 
 public class UsuarioService {
-    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
     }
 
     public Usuario cadastrar(Usuario usuario) {
@@ -18,10 +18,10 @@ public class UsuarioService {
         }
 
         // Verifica se já existe
-        if (userRepository.findByEmailInstitucional(usuario.getEmailInstitucional()).isPresent()) {
+        if (usuarioRepository.findByEmailInstitucional(usuario.getEmailInstitucional()).isPresent()) {
             throw new IllegalArgumentException("E-mail já cadastrado na plataforma.");
         }
 
-        return userRepository.save(usuario);
+        return usuarioRepository.save(usuario);
     }
 }
