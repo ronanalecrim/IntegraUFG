@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox alignment="CENTER" prefHeight="450.0" prefWidth="600.0" spacing="20.0" styleClass="root-layout" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufg.IntegraUFG.view.TelaCadastroController">
+
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+    <Label styleClass="title-label" text="Novo Cadastro" />
+    <Label styleClass="subtitle-label" text="Crie sua conta para acessar o IntegraUFG" />
+
+    <VBox maxWidth="300.0" spacing="15.0">
+        <TextField fx:id="campoNome" promptText="Nome Completo" styleClass="text-field" />
+        <TextField fx:id="campoEmail" promptText="E-mail (ex: aluno@discente.ufg.br)" styleClass="text-field" />
+        <TextField fx:id="campoCurso" promptText="Curso (ex: Sistemas de Informação)" styleClass="text-field" />
+        <PasswordField fx:id="campoSenha" promptText="Senha" styleClass="password-field" />
+
+        <!-- Botão amarrado ao método fazerCadastro() do Controller -->
+        <Button maxWidth="Infinity" onAction="#fazerCadastro" styleClass="primary-button" text="Cadastrar" />
+
+        <!-- NOVO: Botão para cancelar e voltar -->
+        <Button maxWidth="Infinity" onAction="#voltarParaLogin" text="Voltar para o Login" style="-fx-text-fill: #7F8C8D; -fx-background-color: transparent; -fx-cursor: hand;" />
+    </VBox>
+
+</VBox>

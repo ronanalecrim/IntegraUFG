@@ -25,6 +25,8 @@
         <!-- Botão amarrado ao método fazerLogin() do Controller -->
         <Button maxWidth="Infinity" onAction="#fazerLogin" styleClass="primary-button" text="Entrar" />
 
+        <Button maxWidth="Infinity" onAction="#irParaCadastro" text="Não tem uma conta? Cadastre-se" style="-fx-text-fill: #3498DB; -fx-background-color: transparent; -fx-cursor: hand;" />
+
     </VBox>
 
 </VBox>

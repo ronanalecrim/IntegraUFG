@@ -37,4 +37,8 @@ public class TelaLoginController {
             alert.showAndWait();
         }
     }
+    @FXML
+    public void irParaCadastro() {
+        IntegraUfgApp.mudarTela("cadastro.fxml");
+    }
 }
