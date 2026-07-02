@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ufg.IntegraUFG.dto.request.PostagemRequestDTO;
+import ufg.IntegraUFG.dto.request.EventoRequestDTO;
 import ufg.IntegraUFG.dto.response.PostagemResponseDTO;
 import ufg.IntegraUFG.service.PublicacaoService;
-
 import java.util.List;
 
 @RestController
@@ -19,31 +19,44 @@ public class PublicacaoController {
         this.publicacaoService = publicacaoService;
     }
 
-
-    // POST: http://localhost:8080/api/publicacoes/texto
     @PostMapping("/texto")
-    public ResponseEntity<PostagemResponseDTO> criarPostagemTexto(@RequestBody PostagemRequestDTO dto) {
+    public ResponseEntity<?> criarPostagemTexto(@RequestBody PostagemRequestDTO dto) {
         try {
-            PostagemResponseDTO novaPostagem = publicacaoService.criarPostagemTexto(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novaPostagem);
+            return ResponseEntity.status(HttpStatus.CREATED).body(publicacaoService.criarPostagemTexto(dto));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build(); // Retorna Erro 400 se o utilizador não existir
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // GET: http://localhost:8080/api/publicacoes/texto
-    @GetMapping("/texto")
-    public ResponseEntity<List<PostagemResponseDTO>> listarPostagensTexto() {
-        List<PostagemResponseDTO> postagens = publicacaoService.listarPostagensTexto();
-        return ResponseEntity.ok(postagens);
+    // NOVA ROTA: Criar Evento Acadêmico
+    @PostMapping("/evento")
+    public ResponseEntity<?> criarEventoAcademico(@RequestBody EventoRequestDTO dto) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(publicacaoService.criarEvento(dto));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    // DELETE: http://localhost:8080/api/publicacoes/texto/{id}
+    @GetMapping("/texto")
+    public ResponseEntity<List<PostagemResponseDTO>> listarPostagensTexto() {
+        return ResponseEntity.ok(publicacaoService.listarPostagensTexto());
+    }
+
+    // NOVA ROTA: Editar (PUT)
+    @PutMapping("/texto/{id}")
+    public ResponseEntity<?> editarPostagem(@PathVariable Long id, @RequestBody PostagemRequestDTO dto) {
+        try {
+            return ResponseEntity.ok(publicacaoService.atualizarPostagemTexto(id, dto));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/texto/{id}")
     public ResponseEntity<?> deletarPostagemTexto(@PathVariable Long id) {
         try {
             publicacaoService.deletarPostagemTexto(id);
-            // Retorna 204 No Content, que é o padrão HTTP correto para um Delete bem-sucedido
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
