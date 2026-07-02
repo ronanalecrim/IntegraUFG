@@ -1,0 +1,81 @@
+/* Estilo Base */
+.root-layout {
+    -fx-background-color: #F4F7F6;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* Textos da Tela de Login */
+.title-label {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.subtitle-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7F8C8D;
+    -fx-padding: 0 0 20 0;
+}
+
+/* Campos de Texto */
+.text-field, .password-field, .text-area {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #BDC3C7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: #3498DB;
+    -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+/* Botões */
+.primary-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2980B9;
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ECF0F1;
+    -fx-border-color: #ECF0F1;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 15px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+/* Topbar do Feed */
+.top-bar {
+    -fx-background-color: #2C3E50;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.logo-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Cartões (Posts) */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);
+}
