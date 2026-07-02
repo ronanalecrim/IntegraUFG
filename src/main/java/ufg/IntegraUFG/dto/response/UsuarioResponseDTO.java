@@ -1,4 +1,4 @@
 package ufg.IntegraUFG.dto.response;
 
-public record UsuarioResponseDTO(String nome, String emailInstitucional, String curso) {
+public record UsuarioResponseDTO(Long id, String nome, String emailInstitucional, String curso) {
 }
