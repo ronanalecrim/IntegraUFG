@@ -20,7 +20,8 @@ public class PublicacaoController {
         this.publicacaoService = publicacaoService;
     }
 
-    // Criar Postagem Texto
+    // --- ROTAS PARA POSTAGEM DE TEXTO ---
+
     @PostMapping("/texto")
     public ResponseEntity<?> criarPostagemTexto(@RequestBody PostagemRequestDTO dto) {
         try {
@@ -30,13 +31,21 @@ public class PublicacaoController {
         }
     }
 
-    // Listar Postagens Texto
     @GetMapping("/texto")
     public ResponseEntity<List<PostagemResponseDTO>> listarPostagensTexto() {
         return ResponseEntity.ok(publicacaoService.listarPostagensTexto());
     }
 
-    // NOVO: Editar Postagem Texto
+    //Buscar Postagem Específica por ID
+    @GetMapping("/texto/{id}")
+    public ResponseEntity<?> buscarPostagemPorId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(publicacaoService.buscarPorId(id));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PutMapping("/texto/{id}")
     public ResponseEntity<?> editarPostagem(@PathVariable Long id, @RequestBody PostagemRequestDTO dto) {
         try {
@@ -46,7 +55,6 @@ public class PublicacaoController {
         }
     }
 
-    // Excluir Postagem Texto
     @DeleteMapping("/texto/{id}")
     public ResponseEntity<?> deletarPostagemTexto(@PathVariable Long id) {
         try {
@@ -57,11 +65,39 @@ public class PublicacaoController {
         }
     }
 
-    // NOVO: Criar Evento Acadêmico
+    // --- ROTAS PARA EVENTO ACADÊMICO ---
+
     @PostMapping("/evento")
     public ResponseEntity<?> criarEventoAcademico(@RequestBody EventoRequestDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(publicacaoService.criarEvento(dto));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //Listar Eventos
+    @GetMapping("/evento")
+    public ResponseEntity<?> listarEventos() {
+        return ResponseEntity.ok(publicacaoService.listarEventos());
+    }
+
+    //Editar Evento
+    @PutMapping("/evento/{id}")
+    public ResponseEntity<?> editarEvento(@PathVariable Long id, @RequestBody EventoRequestDTO dto) {
+        try {
+            return ResponseEntity.ok(publicacaoService.editarEvento(id, dto));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //Excluir Evento
+    @DeleteMapping("/evento/{id}")
+    public ResponseEntity<?> deletarEvento(@PathVariable Long id) {
+        try {
+            publicacaoService.deletarEvento(id);
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

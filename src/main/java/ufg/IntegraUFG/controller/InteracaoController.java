@@ -3,57 +3,58 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ufg.IntegraUFG.dto.request.ComentarioRequestDTO;
-import ufg.IntegraUFG.model.Comentario;
-import ufg.IntegraUFG.model.Publicacao;
-import ufg.IntegraUFG.model.Usuario;
-import ufg.IntegraUFG.repository.ComentarioRepository;
-import ufg.IntegraUFG.repository.PublicacaoRepository;
-import ufg.IntegraUFG.repository.UsuarioRepository;
+import ufg.IntegraUFG.service.InteracaoService;
 
 @RestController
 @RequestMapping("/api")
 public class InteracaoController {
 
-    private final PublicacaoRepository publicacaoRepo;
-    private final ComentarioRepository comentarioRepo;
-    private final UsuarioRepository usuarioRepo;
+    private final InteracaoService interacaoService;
 
-    public InteracaoController(PublicacaoRepository pRepo, ComentarioRepository cRepo, UsuarioRepository uRepo) {
-        this.publicacaoRepo = pRepo;
-        this.comentarioRepo = cRepo;
-        this.usuarioRepo = uRepo;
+
+    public InteracaoController(InteracaoService interacaoService) {
+        this.interacaoService = interacaoService;
     }
 
-    // Comentar numa publicação
+    // RF4: Comentar numa publicação
     @PostMapping("/publicacoes/{id}/comentarios")
     public ResponseEntity<?> comentar(@PathVariable Long id, @RequestBody ComentarioRequestDTO dto) {
-        Publicacao pub = publicacaoRepo.findById(id).orElse(null);
-        Usuario autor = usuarioRepo.findById(dto.idAutor()).orElse(null);
-
-        if(pub == null || autor == null) return ResponseEntity.badRequest().body("Publicação ou Usuário inválido.");
-
-        Comentario comentario = new Comentario(null, dto.texto(), autor, pub);
-        comentarioRepo.save(comentario);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Comentário adicionado!");
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(interacaoService.adicionarComentario(id, dto));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    // Curtir Publicação
+    // Listar Comentários de uma Publicação
+    @GetMapping("/publicacoes/{id}/comentarios")
+    public ResponseEntity<?> listarComentarios(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(interacaoService.listarComentarios(id));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // RF5: Curtir Publicação
     @PostMapping("/publicacoes/{id}/curtir")
     public ResponseEntity<?> curtirPublicacao(@PathVariable Long id) {
-        return publicacaoRepo.findById(id).map(pub -> {
-            pub.curtir();
-            publicacaoRepo.save(pub);
-            return ResponseEntity.ok("Publicação curtida! Total: " + pub.getTotalCurtidas());
-        }).orElse(ResponseEntity.badRequest().body("Publicação não encontrada."));
+        try {
+            interacaoService.darLikePublicacao(id);
+            return ResponseEntity.ok().body("Publicação curtida com sucesso!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    // Curtir Comentário
+    // RF5: Curtir Comentário
     @PostMapping("/comentarios/{id}/curtir")
     public ResponseEntity<?> curtirComentario(@PathVariable Long id) {
-        return comentarioRepo.findById(id).map(comentario -> {
-            comentario.curtir();
-            comentarioRepo.save(comentario);
-            return ResponseEntity.ok("Comentário curtido! Total: " + comentario.getTotalCurtidas());
-        }).orElse(ResponseEntity.badRequest().body("Comentário não encontrado."));
+        try {
+            interacaoService.darLikeComentario(id);
+            return ResponseEntity.ok().body("Comentário curtido com sucesso!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
