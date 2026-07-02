@@ -1,8 +1,10 @@
 package ufg.IntegraUFG.service;
 
+import org.springframework.stereotype.Service;
 import ufg.IntegraUFG.model.Usuario;
 import ufg.IntegraUFG.repository.UsuarioRepository;
 
+@Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
 
