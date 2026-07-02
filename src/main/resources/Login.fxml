@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" styleClass="root-layout" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufg.IntegraUFG.view.TelaLoginController">
+
+    <!-- Conectando a tela com o arquivo de CSS -->
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+    <!-- Título e Subtítulo da Tela -->
+    <Label styleClass="title-label" text="IntegraUFG" />
+    <Label styleClass="subtitle-label" text="Faça login para continuar" />
+
+    <!-- Caixa central contendo os campos de texto e o botão -->
+    <VBox maxWidth="300.0" spacing="15.0">
+
+        <TextField fx:id="campoEmail" promptText="E-mail Institucional" styleClass="text-field" />
+
+        <PasswordField fx:id="campoSenha" promptText="Senha" styleClass="password-field" />
+
+        <!-- Botão amarrado ao método fazerLogin() do Controller -->
+        <Button maxWidth="Infinity" onAction="#fazerLogin" styleClass="primary-button" text="Entrar" />
+
+    </VBox>
+
+</VBox>
