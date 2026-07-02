@@ -55,4 +55,13 @@ public class PublicacaoService {
         );
     }
 
+    public void deletarPostagemTexto(Long id) {
+        // Verifica se a publicação existe antes de tentar apagar
+        if (!postagemRepository.existsById(id)) {
+            throw new IllegalArgumentException("Publicação não encontrada.");
+        }
+
+        postagemRepository.deleteById(id);
+    }
+
 }

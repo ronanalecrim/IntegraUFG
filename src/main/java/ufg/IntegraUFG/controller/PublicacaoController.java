@@ -37,4 +37,16 @@ public class PublicacaoController {
         List<PostagemResponseDTO> postagens = publicacaoService.listarPostagensTexto();
         return ResponseEntity.ok(postagens);
     }
+
+    // DELETE: http://localhost:8080/api/publicacoes/texto/{id}
+    @DeleteMapping("/texto/{id}")
+    public ResponseEntity<?> deletarPostagemTexto(@PathVariable Long id) {
+        try {
+            publicacaoService.deletarPostagemTexto(id);
+            // Retorna 204 No Content, que é o padrão HTTP correto para um Delete bem-sucedido
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
