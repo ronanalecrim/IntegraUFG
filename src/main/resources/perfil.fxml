@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="root-layout" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufg.IntegraUFG.view.TelaPerfilController">
+
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+    <!-- Barra Superior -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" spacing="20.0" styleClass="top-bar">
+            <padding>
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+            <Label styleClass="logo-label" text="IntegraUFG" />
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                <Button mnemonicParsing="false" onAction="#voltarParaFeed" styleClass="secondary-button" text="Voltar para o Feed" />
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Área Principal de Perfil -->
+    <center>
+        <VBox fx:id="perfilContainer" alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <!-- O ProfileFormComponent será injetado aqui dinamicamente -->
+        </VBox>
+    </center>
+
+</BorderPane>

@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class TelaLoginController {
 
@@ -26,7 +28,17 @@ public class TelaLoginController {
 
             System.out.println("Deu certo! Usuário logado: " + respostaJson);
 
-            // Aqui você colocaria o código para fechar a tela de login e abrir a tela do Feed
+            // Parseia a resposta do usuário e salva a sessão
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = mapper.readTree(respostaJson);
+            SessaoUsuario.usuarioLogadoId = node.get("id").asLong();
+            SessaoUsuario.usuarioLogadoNome = node.get("nome").asText();
+            if(node.has("curso") && !node.get("curso").isNull()) {
+                SessaoUsuario.usuarioLogadoCurso = node.get("curso").asText();
+            }
+
+            // Redireciona para o Feed
+            IntegraUfgApp.mudarTela("feed.fxml");
 
         } catch (Exception e) {
             // Se a API retornar erro (ex: senha errada), mostramos um popup na tela

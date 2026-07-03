@@ -61,4 +61,53 @@ public class UsuarioClient {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body();
     }
+
+    // Método para buscar Perfil (GET)
+    public String buscarPerfil(Long id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + id))
+                .header("Accept", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() >= 300) {
+            throw new RuntimeException("Erro ao buscar perfil: " + response.body());
+        }
+        return response.body();
+    }
+
+    // Método para atualizar Perfil (PUT)
+    public String atualizarPerfil(Long id, String nome, String curso, String senha) throws Exception {
+        String json = objectMapper.writeValueAsString(Map.of(
+                "nome", nome,
+                "curso", curso,
+                "senha", senha
+        ));
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + id))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() >= 300) {
+            throw new RuntimeException("Erro ao atualizar perfil: " + response.body());
+        }
+        return response.body();
+    }
+
+    // Método para excluir Conta (DELETE)
+    public void excluirConta(Long id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + id))
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() >= 300) {
+            throw new RuntimeException("Erro ao excluir conta: " + response.body());
+        }
+    }
 }
