@@ -44,7 +44,7 @@ public class PublicacaoService {
                 .collect(Collectors.toList());
     }
 
-    // NOVO: EDITAR POSTAGEM
+    //EDITAR POSTAGEM
     public PostagemResponseDTO atualizarPostagemTexto(Long id, PostagemRequestDTO dto) {
         PostagemTexto postagem = postagemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Publicação não encontrada."));
@@ -102,7 +102,6 @@ public class PublicacaoService {
         return mapearParaDTO(postagem);
     }
 
-    // CRUD DE EVENTOS QUE FALTAVA
     public List<EventoResponseDTO> listarEventos() {
         return eventoRepository.findAll().stream().map(e -> new EventoResponseDTO(e.getId(), e.getAutor().getNome(), e.getAutor().getCurso(), e.getTitulo(), e.getDescricao(), e.getDataEvento(), e.getLocal(), e.getTotalCurtidas())).collect(Collectors.toList());
     }

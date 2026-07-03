@@ -1,5 +1,6 @@
 package ufg.IntegraUFG.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ufg.IntegraUFG.dto.request.UsuarioRequestDTO;
 import ufg.IntegraUFG.dto.response.UsuarioResponseDTO;
@@ -10,13 +11,19 @@ import ufg.IntegraUFG.repository.UsuarioRepository;
 public class UsuarioService {
 
     private final UsuarioRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository repository) {
+    public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // --- CADASTRO ---
     public UsuarioResponseDTO cadastrar(UsuarioRequestDTO dto) {
+        if (dto.emailInstitucional() == null || dto.emailInstitucional().isBlank()) {
+            throw new IllegalArgumentException("O e-mail não pode ser vazio.");
+        }
+
         if (!dto.emailInstitucional().endsWith("@ufg.br") &&
                 !dto.emailInstitucional().endsWith("@discente.ufg.br")) {
             throw new IllegalArgumentException("Apenas e-mails institucionais da UFG são permitidos.");
@@ -26,7 +33,9 @@ public class UsuarioService {
             throw new IllegalArgumentException("E-mail já cadastrado na plataforma.");
         }
 
-        Usuario usuario = new Usuario(null, dto.nome(), dto.emailInstitucional(), dto.senha(), dto.curso());
+        String senhaHasheada = passwordEncoder.encode(dto.senha());
+
+        Usuario usuario = new Usuario(null, dto.nome(), dto.emailInstitucional(), senhaHasheada, dto.curso());
         Usuario salvo = repository.save(usuario);
         return mapearParaDTO(salvo);
     }
@@ -36,8 +45,7 @@ public class UsuarioService {
         Usuario usuario = repository.findByEmailInstitucional(email)
                 .orElseThrow(() -> new IllegalArgumentException("Credenciais inválidas."));
 
-        // Comparação simples (Num cenário real com Spring Security, usaríamos BCrypt)
-        if (!usuario.getSenha().equals(senha)) {
+        if (!passwordEncoder.matches(senha, usuario.getSenha())) {
             throw new IllegalArgumentException("Credenciais inválidas.");
         }
 
@@ -61,7 +69,8 @@ public class UsuarioService {
 
         // Só atualiza a senha se o utilizador enviou uma nova
         if (dto.senha() != null && !dto.senha().isBlank()) {
-            usuario.setSenha(dto.senha());
+            String novaSenhaHasheada = passwordEncoder.encode(dto.senha());
+            usuario.setSenha(novaSenhaHasheada);
         }
 
         Usuario salvo = repository.save(usuario);
