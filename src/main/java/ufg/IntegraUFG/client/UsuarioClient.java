@@ -59,7 +59,12 @@ public class UsuarioClient {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+        if (response.statusCode() == 201 || response.statusCode() == 200) {
+            return response.body(); // Sucesso! Retorna os dados normalmente.
+        } else {
+            // Se der erro (ex: e-mail sem @ufg), lança a exceção com a mensagem do backend.
+            throw new RuntimeException(response.body());
+        }
     }
 
     // Método para buscar Perfil (GET)
