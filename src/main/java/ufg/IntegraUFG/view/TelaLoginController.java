@@ -10,30 +10,28 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class TelaLoginController {
 
-    // Esses nomes devem ser os mesmos fx:id que estão no seu arquivo .fxml
-    @FXML private TextField campoEmail;
-    @FXML private PasswordField campoSenha;
+    @FXML
+    private TextField campoEmail;
+    @FXML
+    private PasswordField campoSenha;
 
     private final UsuarioClient usuarioClient = new UsuarioClient();
 
-    // Esse é o método que você vincula ao botão "Entrar" no Scene Builder ou no FXML (onAction="#fazerLogin")
     @FXML
     public void fazerLogin() {
         try {
             String email = campoEmail.getText();
             String senha = campoSenha.getText();
 
-            // Aqui a mágica acontece: a tela chama o Client, que chama a API
             String respostaJson = usuarioClient.fazerLogin(email, senha);
 
             System.out.println("Deu certo! Usuário logado: " + respostaJson);
 
-            // Parseia a resposta do usuário e salva a sessão
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = mapper.readTree(respostaJson);
             SessaoUsuario.usuarioLogadoId = node.get("id").asLong();
             SessaoUsuario.usuarioLogadoNome = node.get("nome").asText();
-            if(node.has("curso") && !node.get("curso").isNull()) {
+            if (node.has("curso") && !node.get("curso").isNull()) {
                 SessaoUsuario.usuarioLogadoCurso = node.get("curso").asText();
             }
 
@@ -49,6 +47,7 @@ public class TelaLoginController {
             alert.showAndWait();
         }
     }
+
     @FXML
     public void irParaCadastro() {
         IntegraUfgApp.mudarTela("cadastro.fxml");

@@ -19,10 +19,10 @@
         <TextField fx:id="campoCurso" promptText="Curso (ex: Sistemas de Informação)" styleClass="text-field" />
         <PasswordField fx:id="campoSenha" promptText="Senha" styleClass="password-field" />
 
-        <!-- Botão amarrado ao método fazerCadastro() do Controller -->
+        <!-- Botão do método fazerCadastro() do Controller -->
         <Button maxWidth="Infinity" onAction="#fazerCadastro" styleClass="primary-button" text="Cadastrar" />
 
-        <!-- NOVO: Botão para cancelar e voltar -->
+        <!-- Botão para cancelar e voltar -->
         <Button maxWidth="Infinity" onAction="#voltarParaLogin" text="Voltar para o Login" style="-fx-text-fill: #7F8C8D; -fx-background-color: transparent; -fx-cursor: hand;" />
     </VBox>
 

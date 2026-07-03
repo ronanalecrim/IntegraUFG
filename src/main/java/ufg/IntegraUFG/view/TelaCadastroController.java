@@ -8,10 +8,14 @@ import javafx.scene.control.Alert;
 
 public class TelaCadastroController {
 
-    @FXML private TextField campoNome;
-    @FXML private TextField campoEmail;
-    @FXML private TextField campoCurso;
-    @FXML private PasswordField campoSenha;
+    @FXML
+    private TextField campoNome;
+    @FXML
+    private TextField campoEmail;
+    @FXML
+    private TextField campoCurso;
+    @FXML
+    private PasswordField campoSenha;
 
     private final UsuarioClient usuarioClient = new UsuarioClient();
 
@@ -31,7 +35,7 @@ public class TelaCadastroController {
             alert.setContentText("Sua conta foi criada. Você já pode fazer login.");
             alert.showAndWait();
 
-            // NOVO: Volta para a tela de login automaticamente após o sucesso!
+            // Volta para a tela de login automaticamente após o sucesso
             IntegraUfgApp.mudarTela("login.fxml");
 
         } catch (Exception e) {
@@ -43,7 +47,7 @@ public class TelaCadastroController {
         }
     }
 
-    // NOVO: Método para um botão "Voltar" (caso o usuário desista de cadastrar)
+    // Método para o botão Voltar
     @FXML
     public void voltarParaLogin() {
         IntegraUfgApp.mudarTela("login.fxml");

@@ -19,16 +19,22 @@ import java.util.Map;
 
 public class TelaFeedController {
 
-    @FXML private VBox feedContainer;
-    
+    @FXML
+    private VBox feedContainer;
+
     // Campos da Aba de Postagem
-    @FXML private TextArea campoNovaPostagem;
+    @FXML
+    private TextArea campoNovaPostagem;
 
     // Campos da Aba de Evento
-    @FXML private TextField campoEventoTitulo;
-    @FXML private TextArea campoEventoDescricao;
-    @FXML private DatePicker campoEventoData;
-    @FXML private TextField campoEventoLocal;
+    @FXML
+    private TextField campoEventoTitulo;
+    @FXML
+    private TextArea campoEventoDescricao;
+    @FXML
+    private DatePicker campoEventoData;
+    @FXML
+    private TextField campoEventoLocal;
 
     private final PublicacaoClient publicacaoClient = new PublicacaoClient();
     private final InteracaoClient interacaoClient = new InteracaoClient();
@@ -43,15 +49,19 @@ public class TelaFeedController {
         try {
             String jsonRespostaTextos = publicacaoClient.buscarFeed();
             String jsonRespostaEventos = publicacaoClient.buscarEventos();
-            
+
             // Limpa o feed (removendo todos, menos o primeiro que é o TabPane de criação)
             if (feedContainer.getChildren().size() > 1) {
                 feedContainer.getChildren().remove(1, feedContainer.getChildren().size());
             }
 
-            List<Map<String, Object>> eventos = objectMapper.readValue(jsonRespostaEventos, new TypeReference<List<Map<String, Object>>>() {});
-            List<Map<String, Object>> publicacoes = objectMapper.readValue(jsonRespostaTextos, new TypeReference<List<Map<String, Object>>>() {});
-            
+            List<Map<String, Object>> eventos = objectMapper.readValue(jsonRespostaEventos,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+            List<Map<String, Object>> publicacoes = objectMapper.readValue(jsonRespostaTextos,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+
             // Renderiza os Eventos
             for (Map<String, Object> ev : eventos) {
                 String autorNome = (String) ev.get("nomeAutor");
@@ -62,18 +72,18 @@ public class TelaFeedController {
                 String local = (String) ev.get("local");
                 int curtidas = ev.get("curtidas") != null ? (int) ev.get("curtidas") : 0;
                 Long idPub = ((Number) ev.get("id")).longValue();
-                
-                boolean canDelete = SessaoUsuario.usuarioLogadoNome != null && SessaoUsuario.usuarioLogadoNome.equals(autorNome);
+
+                boolean canDelete = SessaoUsuario.usuarioLogadoNome != null
+                        && SessaoUsuario.usuarioLogadoNome.equals(autorNome);
 
                 EventoCardComponent[] cardHolder = new EventoCardComponent[1];
                 cardHolder[0] = new EventoCardComponent(
-                        autorNome, autorCurso, titulo, descricao, dataEvento, local, curtidas, 
+                        autorNome, autorCurso, titulo, descricao, dataEvento, local, curtidas,
                         () -> curtirPublicacao(idPub),
                         () -> carregarComentariosEvento(idPub, cardHolder[0]),
                         (texto) -> enviarComentarioEvento(idPub, texto, cardHolder[0]),
                         canDelete,
-                        () -> deletarEvento(idPub)
-                );
+                        () -> deletarEvento(idPub));
                 feedContainer.getChildren().add(cardHolder[0]);
             }
 
@@ -86,17 +96,17 @@ public class TelaFeedController {
                 int curtidas = pub.get("curtidas") != null ? (int) pub.get("curtidas") : 0;
                 Long idPub = ((Number) pub.get("id")).longValue();
 
-                boolean canDelete = SessaoUsuario.usuarioLogadoNome != null && SessaoUsuario.usuarioLogadoNome.equals(autorNome);
+                boolean canDelete = SessaoUsuario.usuarioLogadoNome != null
+                        && SessaoUsuario.usuarioLogadoNome.equals(autorNome);
 
                 PostCardComponent[] cardHolder = new PostCardComponent[1];
                 cardHolder[0] = new PostCardComponent(
-                        autorNome, autorCurso, conteudo, dataCriacao, curtidas, 
+                        autorNome, autorCurso, conteudo, dataCriacao, curtidas,
                         () -> curtirPublicacao(idPub),
                         () -> carregarComentariosPost(idPub, cardHolder[0]),
                         (texto) -> enviarComentarioPost(idPub, texto, cardHolder[0]),
                         canDelete,
-                        () -> deletarPostagem(idPub)
-                );
+                        () -> deletarPostagem(idPub));
                 feedContainer.getChildren().add(cardHolder[0]);
             }
         } catch (Exception e) {
@@ -108,8 +118,11 @@ public class TelaFeedController {
     private void carregarComentariosPost(Long idPublicacao, PostCardComponent card) {
         try {
             String json = interacaoClient.listarComentarios(idPublicacao);
-            List<Map<String, Object>> comments = objectMapper.readValue(json, new TypeReference<List<Map<String, Object>>>() {});
-            card.renderComments(comments, idComentario -> curtirComentario(idComentario, () -> carregarComentariosPost(idPublicacao, card)));
+            List<Map<String, Object>> comments = objectMapper.readValue(json,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+            card.renderComments(comments,
+                    idComentario -> curtirComentario(idComentario, () -> carregarComentariosPost(idPublicacao, card)));
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro ao carregar comentários", e.getMessage());
@@ -119,8 +132,11 @@ public class TelaFeedController {
     private void carregarComentariosEvento(Long idPublicacao, EventoCardComponent card) {
         try {
             String json = interacaoClient.listarComentarios(idPublicacao);
-            List<Map<String, Object>> comments = objectMapper.readValue(json, new TypeReference<List<Map<String, Object>>>() {});
-            card.renderComments(comments, idComentario -> curtirComentario(idComentario, () -> carregarComentariosEvento(idPublicacao, card)));
+            List<Map<String, Object>> comments = objectMapper.readValue(json,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+            card.renderComments(comments, idComentario -> curtirComentario(idComentario,
+                    () -> carregarComentariosEvento(idPublicacao, card)));
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro ao carregar comentários", e.getMessage());
@@ -158,7 +174,7 @@ public class TelaFeedController {
     private void curtirComentario(Long idComentario, Runnable reloadCallback) {
         try {
             interacaoClient.curtirComentario(idComentario);
-            reloadCallback.run(); // Reloads comments after liking
+            reloadCallback.run();
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro ao curtir comentário", e.getMessage());
@@ -194,8 +210,9 @@ public class TelaFeedController {
         String descricao = campoEventoDescricao.getText();
         LocalDate data = campoEventoData.getValue();
         String local = campoEventoLocal.getText();
-        
-        if (titulo == null || titulo.trim().isEmpty() || descricao == null || descricao.trim().isEmpty() || data == null || local == null || local.trim().isEmpty()) {
+
+        if (titulo == null || titulo.trim().isEmpty() || descricao == null || descricao.trim().isEmpty() || data == null
+                || local == null || local.trim().isEmpty()) {
             mostrarAlerta("Aviso", "Todos os campos do evento são obrigatórios.");
             return;
         }
