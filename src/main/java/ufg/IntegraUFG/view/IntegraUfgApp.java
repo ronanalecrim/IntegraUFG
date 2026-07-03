@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 
 public class IntegraUfgApp extends Application {
 
-    // Guardamos o "palco" principal para poder trocar as "cenas" (telas) nele
     private static Stage palcoPrincipal;
 
     @Override
@@ -22,7 +21,7 @@ public class IntegraUfgApp extends Application {
         palcoPrincipal.show();
     }
 
-    // Método que pode ser chamado de qualquer Controller para trocar de tela!
+    // Método que pode ser chamado de qualquer Controller para trocar de tela
     public static void mudarTela(String arquivoFxml) {
         try {
             Parent raiz = FXMLLoader.load(IntegraUfgApp.class.getResource("/" + arquivoFxml));
