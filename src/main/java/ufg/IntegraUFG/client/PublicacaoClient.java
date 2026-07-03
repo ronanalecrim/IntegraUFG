@@ -104,4 +104,26 @@ public class PublicacaoClient {
             throw new RuntimeException("Erro ao criar evento: " + response.body());
         }
     }
+
+    public void deletarPostagemTexto(Long id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/publicacoes/texto/" + id))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() >= 300) {
+            throw new RuntimeException("Erro ao deletar postagem: " + response.body());
+        }
+    }
+
+    public void deletarEvento(Long id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/publicacoes/evento/" + id))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() >= 300) {
+            throw new RuntimeException("Erro ao deletar evento: " + response.body());
+        }
+    }
 }

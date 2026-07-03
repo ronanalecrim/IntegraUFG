@@ -27,7 +27,8 @@
                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
             </padding>
             <Label styleClass="logo-label" text="IntegraUFG" />
-            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS" spacing="10.0">
+                <Button mnemonicParsing="false" onAction="#irParaPerfil" styleClass="secondary-button" text="Meu Perfil" />
                 <Button mnemonicParsing="false" onAction="#fazerLogout" styleClass="secondary-button" text="Sair" />
             </HBox>
         </HBox>
