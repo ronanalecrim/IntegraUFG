@@ -16,7 +16,7 @@ public class InteracaoController {
         this.interacaoService = interacaoService;
     }
 
-    // RF4: Comentar numa publicação
+    // Comentar numa publicação
     @PostMapping("/publicacoes/{id}/comentarios")
     public ResponseEntity<?> comentar(@PathVariable Long id, @RequestBody ComentarioRequestDTO dto) {
         try {
@@ -36,7 +36,7 @@ public class InteracaoController {
         }
     }
 
-    // RF5: Curtir Publicação
+    // Curtir Publicação
     @PostMapping("/publicacoes/{id}/curtir")
     public ResponseEntity<?> curtirPublicacao(@PathVariable Long id) {
         try {
@@ -47,7 +47,7 @@ public class InteracaoController {
         }
     }
 
-    // RF5: Curtir Comentário
+    // Curtir Comentário
     @PostMapping("/comentarios/{id}/curtir")
     public ResponseEntity<?> curtirComentario(@PathVariable Long id) {
         try {
